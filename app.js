@@ -23,33 +23,32 @@ app.get("/", (req, res) => {
 });
 
 // Original version: Signup: Create new user
-app.post("/signup", (req, res) => {
-  const { name, email } = req.body;
-  if (!name || !email) {
-    return res.send("Please enter both name and email.");
-  }
+//app.post("/signup", (req, res) => {
+  //const { name, email } = req.body;
+  //if (!name || !email) {
+    //return res.send("Please enter both name and email.");
+  //}
 
-  const newUser = { id: Date.now(), name, email };
-  users.push(newUser);
-  fs.writeFileSync(DATA_FILE, JSON.stringify(users, null, 2));
+  //const newUser = { id: Date.now(), name, email };
+  //users.push(newUser);
+  //fs.writeFileSync(DATA_FILE, JSON.stringify(users, null, 2));
+
+  //res.redirect("/users");
+//});
+
+New version: 
+app.post("/signup", (req, res) => {
+   const { name, email, phone } = req.body;
+  if (!name || !email || !phone) {
+     return res.send("Please enter both name, email, and phone.");
+   }
+
+  const newUser = { id: Date.now(), name, email, phone };
+   users.push(newUser);
+   fs.writeFileSync(DATA_FILE, JSON.stringify(users, null, 2));
 
   res.redirect("/users");
 });
-
-
-// // New version: 
-// app.post("/signup", (req, res) => {
-//   const { name, email, phone } = req.body;
-//   if (!name || !email || !phone) {
-//     return res.send("Please enter both name, email, and phone.");
-//   }
-
-//   const newUser = { id: Date.now(), name, email, phone };
-//   users.push(newUser);
-//   fs.writeFileSync(DATA_FILE, JSON.stringify(users, null, 2));
-
-//   res.redirect("/users");
-// });
 
 // Original version: User list view
 app.get("/users", (req, res) => {
@@ -81,36 +80,36 @@ app.get("/users", (req, res) => {
   res.send(html);
 });
 
-// // New version: User list view
-// app.get("/users", (req, res) => {
-//   let html = `
-//   <h2>Registered Users</h2>
-//   <table border="1" cellpadding="5">
-//     <tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Action</th></tr>
-//   `;
+ New version: User list view
+ app.get("/users", (req, res) => {
+   let html = `
+   <h2>Registered Users</h2>
+   <table border="1" cellpadding="5">
+     <tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Action</th></tr>
+   `;
 
-//   users.forEach(u => {
-//     html += `
-//       <tr>
-//         <td>${u.id}</td>
-//         <td>${u.name}</td>
-//         <td>${u.email}</td>
-//         <td>${u.phone || "-"}</td>
-//         <td>
-//           <form action="/delete/${u.id}" method="POST" style="display:inline;">
-//             <button type="submit">Delete</button>
-//           </form>
-//         </td>
-//       </tr>
-//     `;
-//   });
+   users.forEach(u => {
+     html += `
+       <tr>
+         <td>${u.id}</td>
+         <td>${u.name}</td>
+         <td>${u.email}</td>
+         <td>${u.phone || "-"}</td>
+         <td>
+           <form action="/delete/${u.id}" method="POST" style="display:inline;">
+             <button type="submit">Delete</button>
+           </form>
+         </td>
+       </tr>
+     `;
+   });
 
-//   html += `
-//   </table>
-//   <br><a href="/">Back to Signup</a>
-//   `;
-//   res.send(html);
-// });
+   html += `
+   </table>
+    <br><a href="/">Back to Signup</a>
+   `;
+   res.send(html);
+ });
 
 // Delete user
 app.post("/delete/:id", (req, res) => {
